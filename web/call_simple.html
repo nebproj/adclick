@@ -12,14 +12,16 @@
 
 
         function onCallClick() {
-            var to = document.getElementById("callTo").value;
-            var value = document.getElementById("callValue").value;
-            var callFunction = document.getElementById("callFunction").value;
-            var callArgs = document.getElementById("callArgs").value;
+            // var to = document.getElementById("callTo").value;
+            // var value = document.getElementById("callValue").value;
+            // var callFunction = document.getElementById("callFunction").value;
+            // var callArgs = document.getElementById("callArgs").value;
 
-            to = "n1sTYm9ezC7KqekmRzTa8p2spS2jdEMAdpC";
-            callFunction = "click";
-            callArgs = "[\"test3\"]"
+
+            var to = "n1sTYm9ezC7KqekmRzTa8p2spS2jdEMAdpC";
+            var value;
+            var callFunction = "click";
+            var callArgs = "[\"test3\"]"
             serialNumber = nebPay.call(to, value, callFunction, callArgs, {
                 qrcode: {
                     showQRCode: true
@@ -100,26 +102,7 @@
 
 
 <div>
-    <div>Call</div>
-
-    <div style="display: inline-block">
-        <div>to:</div>
-        <input type="text" id="callTo" placeholder="contract address"/>
-    </div>
-
-    <div style="display: inline-block">
-        <div>value:</div>
-        <input type="text" id="callValue" placeholder="value"/>
-    </div>
-    <div style="display: inline-block">
-        <div>function:</div>
-        <input type="text" id="callFunction" placeholder="function name"/>
-    </div>
-    <div style="display: inline-block">
-        <div>args:</div>
-        <input type="text" id="callArgs" placeholder="call args"/>
-    </div>
-    <button type="button" onClick="onCallClick();">pay</button>
+    <button type="button" onClick="onCallClick();">call click function</button>
 </div>
 
 
