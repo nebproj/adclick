@@ -21,7 +21,7 @@ class AdClick {
    */
   click(id) {
 
-    let clickCount = LocalContractStorage.get(this.storageKeywordClickCount(id));
+    let clickCount = LocalContractStorage.get(this.storageKeyClickCount(id));
     if (!clickCount) {
       Event.Trigger("click", "clickCount for id " + id + " is not found");
       clickCount = new BigNumber(0);
@@ -32,13 +32,13 @@ class AdClick {
     Event.Trigger("click", "clickCount before: " + clickCount);
     clickCount = clickCount.plus(1);
     Event.Trigger("click", "clickCount after: " + clickCount);
-    LocalContractStorage.set(this.storageKeywordClickCount(id), clickCount);
+    LocalContractStorage.set(this.storageKeyClickCount(id), clickCount);
 
     return clickCount;
   }
 
   /** construct storage keyword */
-  storageKeywordClickCount(id) {
+  storageKeyClickCount(id) {
     return "clickcount" + id;
   }
 
@@ -101,7 +101,7 @@ class AdClick {
   }
 
   getClickCount(id) {
-    return LocalContractStorage.get(this.storageKeywordClickCount(id));
+    return LocalContractStorage.get(this.storageKeyClickCount(id));
   }
 
   getOwner() {
