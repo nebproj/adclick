@@ -51,28 +51,41 @@ class AdClick {
   }
 
   /** contract owner can withdraw fund.  if it is not paused right now.  */
-  withdraw(amount) {
+  withdraw(value) {
     let from = Blockchain.transaction.from;
+    let amount = new BigNumber(value);
     if (from == this.owner
       && !this.paused
       && amount < this.total) {
-        var result = Blockchain.transfer(from, amount);
-        if (!result) {
-          throw new Error("transfer failed.");
-        }
-        Event.Trigger("withdraw", {
-          Transfer: {
-            from: Blockchain.transaction.to,
-            to: from,
-            value: amount.toString()
-          }
-        });
-
         this.total = new BigNumber(this.total);
-        this.total = this.total.sub(amount);
+        // for security reason, we sub before transfer
+        // this is from bankvaultcontract example, but this does not work.  it will get "<sub>10000000</sub>" instead of number
+        //this.total = this.total.sub(amount); 
+        this.total = this.total - amount;
+
+        if (this.total > 0) {
+          var result = Blockchain.transfer(from, amount);
+          if (!result) {
+            throw new Error("transfer failed.");
+          }
+          Event.Trigger("withdraw", {
+            Transfer: {
+              from: Blockchain.transaction.to,
+              to: from,
+              value: amount.toString()
+            }
+          });
+        }
+
+        
 
         return this.total;
     }
+  }
+
+  subtract(value) {
+    let amount = new BigNumber(value);
+    return this.total - amount;
   }
 
   pause() {
