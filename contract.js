@@ -14,32 +14,49 @@ class AdClick {
     this.total = new BigNumber(0);
   }
 
+  /** register click (cpc) */
+  registerClick(id) {
+    this.register(id, "click");
+  }
+
+  /** register view (cpm) */
+  registerView(id) {
+    this.register(id, "view");
+  }
+
+  /** register action.  (action as in cpa) */
+  registerAction(id) {
+    this.register(id, "action");
+  }
+
   /**
    * called when user click on an ad.  increment counter.
    * @param id id of the ad that is clicked
+   * @param type [string] either "click" | "view" | "action" 
    * @return click count
    */
-  click(id) {
+  register(id, type) {
+    this.deposit();
 
-    let clickCount = LocalContractStorage.get(this.storageKeyClickCount(id));
-    if (!clickCount) {
-      Event.Trigger("click", "clickCount for id " + id + " is not found");
-      clickCount = new BigNumber(0);
+    let count = LocalContractStorage.get(this.constructStorageKey(id, type));
+    if (!count) {
+      Event.Trigger("register " + type, "count for id:" + id + ", type: " + type + " is not found");
+      count = new BigNumber(0);
     } else {
-      clickCount = new BigNumber(clickCount);
+      count = new BigNumber(count);
     }
 
-    Event.Trigger("click", "clickCount before: " + clickCount);
-    clickCount = clickCount.plus(1);
-    Event.Trigger("click", "clickCount after: " + clickCount);
-    LocalContractStorage.set(this.storageKeyClickCount(id), clickCount);
+    Event.Trigger("register " + type, "count before: " + count);
+    count = count.plus(1);
+    Event.Trigger("register " + type, "count after: " + count);
+    LocalContractStorage.set(this.constructStorageKey(id, type), count);
 
-    return clickCount;
+    return count;
   }
 
   /** construct storage keyword */
-  storageKeyClickCount(id) {
-    return "clickcount" + id;
+  constructStorageKey(id, type) {
+    return type + "count" + id;
   }
 
   /** allow deposit fund to this contract */
@@ -100,8 +117,8 @@ class AdClick {
     }
   }
 
-  getClickCount(id) {
-    return LocalContractStorage.get(this.storageKeyClickCount(id));
+  getCount(id, type) {
+    return LocalContractStorage.get(this.constructStorageKey(id, type));
   }
 
   getOwner() {
