@@ -83,11 +83,6 @@ class AdClick {
     }
   }
 
-  subtract(value) {
-    let amount = new BigNumber(value);
-    return this.total - amount;
-  }
-
   pause() {
     let from = Blockchain.transaction.from;
     if (from == this.owner) {
