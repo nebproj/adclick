@@ -54,7 +54,7 @@ class AdClick {
   withdraw(value, address) {
     let from = Blockchain.transaction.from;
     let amount = new BigNumber(value);
-    if (from == this.owner
+    if (from === this.owner
       && !this.paused
       && amount < this.total) {
         this.total = new BigNumber(this.total);
@@ -85,14 +85,14 @@ class AdClick {
 
   pause() {
     let from = Blockchain.transaction.from;
-    if (from == this.owner) {
+    if (from === this.owner) {
       this.paused = true;
     }
   }
 
   unpause() {
     let from = Blockchain.transaction.from;
-    if (from == this.owner) {
+    if (from === this.owner) {
       this.paused = false;
     }
   }
