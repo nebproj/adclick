@@ -54,16 +54,19 @@ class AdClick {
   withdraw(value, address) {
     let from = Blockchain.transaction.from;
     let amount = new BigNumber(value);
+    const ZERO = new BigNumber(0);
     if (from === this.owner
       && !this.paused
-      && amount < this.total) {
-        this.total = new BigNumber(this.total);
+      && amount <= this.total) {
+        // if we get this number from localcontractstorage, then we need to cast it again, else we don't have to.
+        //this.total = new BigNumber(this.total);
+
         // for security reason, we sub before transfer
         // this is from bankvaultcontract example, but this does not work.  it will get "<sub>10000000</sub>" instead of number
         //this.total = this.total.sub(amount); 
         this.total = this.total - amount;
 
-        if (this.total > 0) {
+        if (this.total >= ZERO) {
           var result = Blockchain.transfer(address, amount);
           if (!result) {
             throw new Error("transfer failed.");
