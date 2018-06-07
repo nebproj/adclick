@@ -51,7 +51,7 @@ class AdClick {
   }
 
   /** contract owner can withdraw fund.  if it is not paused right now.  */
-  withdraw(value) {
+  withdraw(value, address) {
     let from = Blockchain.transaction.from;
     let amount = new BigNumber(value);
     if (from == this.owner
@@ -64,14 +64,14 @@ class AdClick {
         this.total = this.total - amount;
 
         if (this.total > 0) {
-          var result = Blockchain.transfer(from, amount);
+          var result = Blockchain.transfer(address, amount);
           if (!result) {
             throw new Error("transfer failed.");
           }
           Event.Trigger("withdraw", {
             Transfer: {
               from: Blockchain.transaction.to,
-              to: from,
+              to: address,
               value: amount.toString()
             }
           });
