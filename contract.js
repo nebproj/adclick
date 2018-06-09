@@ -1,4 +1,4 @@
-class AdClick {
+class AdTracker {
   constructor() {
     LocalContractStorage.defineProperties(this, {
       owner: null,
@@ -135,4 +135,4 @@ class AdClick {
 
 }
 
-module.exports = AdClick;
+module.exports = AdTracker;
